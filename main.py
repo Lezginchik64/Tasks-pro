@@ -1,20 +1,21 @@
 # 1
-def convert(text):
-    low_count = len(list(filter(str.islower, text)))
-    up_count = len(list(filter(str.isupper, text)))
-    if low_count >= up_count:
-        return text.lower()
-    return text.upper()
+def filter_anagrams(word, words):
+    return [i for i in words if sorted(word) == sorted(i)]
+
 
 # 2
-def convert(text):
-    low_count = sum(list(map(str.islower, text)))
-    up_count = sum(list(map(str.isupper, text)))
-    if low_count >= up_count:
-        return text.lower()
-    return text.upper()
+def letters(words):
+    letters_dict = {}
+    for i in words:
+        letters_dict[i] = letters_dict.get(i, 0) + 1
+    return letters_dict
+
+def filter_anagrams(word, anagrams):
+    return [i for i in anagrams if letters(word) == letters(i)]
 
 
-print(convert('BEEgeek'))
-print(convert('pyTHON'))
-print(convert('pi31415!'))
+print(filter_anagrams('отсечка', ['сеточка', 'стоечка', 'тесачок', 'чесотка']))
+
+word = 'abba'
+anagrams = ['aabb', 'abcd', 'bbaa', 'dada']
+print(filter_anagrams(word, anagrams))
