@@ -1,6 +1,22 @@
-def index_of_nearest(numbers, number):
-    return numbers.index(min(numbers, key=lambda x: abs(number - x))) if numbers else -1
+# 1
+def spell(*args):
+    return {k[0].lower(): len(k) for k in sorted(args, key=len)}
 
 
-print(index_of_nearest([7, 13, 3, 5, 18], 0))
-print(index_of_nearest([9, 5, 3, 2, 11], 4))
+# 2
+def spell(*args):
+    res = {}
+    for word in args:
+        key = word[0].lower()
+        if key not in res or len(word) > res[key]:
+            res[key] = len(word)
+    return res
+
+
+words = ['Россия', 'Австрия', 'Австралия', 'РумыниЯ', 'Украина', 'КИТай', 'УЗБЕКИСТАН']
+print(spell(*words))
+
+print(spell('Математика', 'История', 'химия', 'биология', 'Информатика'))
+
+words = ['fruit', 'football', 'February', 'forest', 'Family']
+print(spell(*words))
