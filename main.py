@@ -1,9 +1,20 @@
-def print_given(*args, **kwargs):
-    for a in args:
-        print(a, type(a))
-    for k in sorted(kwargs):
-        print(f'{k} {kwargs[k]}', type(kwargs[k]))
+# 1
+def convert(text):
+    low_count = len(list(filter(str.islower, text)))
+    up_count = len(list(filter(str.isupper, text)))
+    if low_count >= up_count:
+        return text.lower()
+    return text.upper()
+
+# 2
+def convert(text):
+    low_count = sum(list(map(str.islower, text)))
+    up_count = sum(list(map(str.isupper, text)))
+    if low_count >= up_count:
+        return text.lower()
+    return text.upper()
 
 
-print_given(b=2, d=4, c=3, a=1)
-print_given(1, [1, 2, 3], 'three', two=2)
+print(convert('BEEgeek'))
+print(convert('pyTHON'))
+print(convert('pi31415!'))
