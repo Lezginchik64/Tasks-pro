@@ -1,21 +1,9 @@
-# 1
-def is_valid(string):
-    return all((4 <= len(string) <= 6, string.isdigit()))
+def print_given(*args, **kwargs):
+    for a in args:
+        print(a, type(a))
+    for k in sorted(kwargs):
+        print(f'{k} {kwargs[k]}', type(kwargs[k]))
 
 
-# 2
-def is_valid(string):
-    return string.isdigit() and len(string) in (4, 5, 6)
-
-
-# 3
-def is_valid(string):
-    res = [i for i in string if 4 <= len(string) <= 6 and i.isdigit()]
-    return len(string) == len(res) and len(string) > 1
-
-
-print(is_valid('89abc1'))
-print(is_valid('4367'))
-print(is_valid('900876'))
-print(is_valid('49 83'))
-print(is_valid(""))
+print_given(b=2, d=4, c=3, a=1)
+print_given(1, [1, 2, 3], 'three', two=2)
