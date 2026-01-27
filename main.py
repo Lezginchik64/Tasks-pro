@@ -1,15 +1,13 @@
-def funk(d1, d2, d3):
-    m1 = d1 + d2 + d3
-    m2 = 2 * d1 + 2 * d2
-    m3 = 2 * d2 + 2 * d3
-    m4 = 2 * d1 + 2 * d3
-    return min(m1, m2, m3, m4)
+# 1
+letters = [input() for _ in range(3)]
+if all(map(lambda x: x in "АаВСсЕеНКМОоРрТХху", letters)):
+    print("ru")
+elif all(map(lambda x: x in "AaBCcEeHKMOoPpTXxy", letters)):
+    print("en")
+else:
+    print("mix")
 
-
-d1, d2, d3 = int(input()), int(input()), int(input())
-print(funk(d1, d2, d3))
-
-# #1) ДОМ --> МАГАЗИН 1 -->  МАГАЗИН 2 --> ДОМ
-# #2) ДОМ --> МАГАЗИН 1 -->  МАГАЗИН 2 -->  МАГАЗИН 1 --> ДОМ
-# #3) ДОМ --> МАГАЗИН 2 -->  МАГАЗИН 1 -->  МАГАЗИН 2--> ДОМ
-# #4) ДОМ --> МАГАЗИН 1 -->  ДОМ --> МАГАЗИН 2 --> ДОМ
+# 2
+letters = set(input() for _ in range(3))
+print('ru' if letters <= set("АаВСсЕеНКМОоРрТХху") else "en" if letters <= set("AaBCcEeHKMOoPpTXxy") else 'mix')
+# A <= B - все элементы множества A содержатся в множестве B
