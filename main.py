@@ -1,13 +1,5 @@
-# 1
-letters = [input() for _ in range(3)]
-if all(map(lambda x: x in "АаВСсЕеНКМОоРрТХху", letters)):
-    print("ru")
-elif all(map(lambda x: x in "AaBCcEeHKMOoPpTXxy", letters)):
-    print("en")
-else:
-    print("mix")
-
-# 2
-letters = set(input() for _ in range(3))
-print('ru' if letters <= set("АаВСсЕеНКМОоРрТХху") else "en" if letters <= set("AaBCcEeHKMOoPpTXxy") else 'mix')
-# A <= B - все элементы множества A содержатся в множестве B
+n, x, y, a, b = map(int, input().split())
+n = [i for i in range(1, n + 1)]
+n[x - 1:y] = reversed(n[x - 1:y])
+n[a - 1:b] = reversed(n[a - 1:b])
+print(*n)
