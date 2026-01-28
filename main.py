@@ -1,5 +1,8 @@
-n, x, y, a, b = map(int, input().split())
-n = [i for i in range(1, n + 1)]
-n[x - 1:y] = reversed(n[x - 1:y])
-n[a - 1:b] = reversed(n[a - 1:b])
-print(*n)
+# 1
+n = input().split()
+num = set(int(i) for i in n if n.count(i) > 1)
+print(*sorted(num))
+
+# 2
+nums = [int(i) for i in input().split()]
+print(*sorted(filter(lambda x: nums.count(x) > 1, set(nums))))
