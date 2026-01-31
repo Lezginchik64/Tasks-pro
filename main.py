@@ -1,23 +1,17 @@
 from datetime import date
 
 
-# 1
-def get_date_range(start, end):
-    return [date.fromordinal(i) for i in range(start.toordinal(), end.toordinal() + 1)]
-
-
-# 2
-def get_date_range(start, end):
-    start = start.toordinal()
-    end = end.toordinal()
+def saturdays_between_two_dates(start, end):
     if start > end:
-        return []
-    dates = []
-    for i in range(start, end + 1):
-        dates.append(date.fromordinal(i))
-    return dates
+        start, end = end, start
+    return sum(
+        [1 for i in range(start.toordinal(), end.toordinal() + 1) if date.fromordinal(i).isoweekday() == 6])
 
 
-date1 = date(2021, 10, 1)
-date2 = date(2021, 10, 5)
-print(*get_date_range(date1, date2), sep='\n')
+date1 = date(2021, 11, 1)
+date2 = date(2021, 11, 22)
+print(saturdays_between_two_dates(date1, date2))
+
+date1 = date(2020, 7, 26)
+date2 = date(2020, 7, 2)
+print(saturdays_between_two_dates(date1, date2))
