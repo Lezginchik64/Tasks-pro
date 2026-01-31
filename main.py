@@ -1,13 +1,23 @@
 from datetime import date
 
 
-def get_min_max(dates):
-    if dates:
-        return min(dates), max(dates)
-    return ()
+# 1
+def get_date_range(start, end):
+    return [date.fromordinal(i) for i in range(start.toordinal(), end.toordinal() + 1)]
 
 
-dates = [date(2021, 10, 5), date(1992, 6, 10), date(2012, 2, 23), date(1995, 10, 12)]
-print(get_min_max(dates))
+# 2
+def get_date_range(start, end):
+    start = start.toordinal()
+    end = end.toordinal()
+    if start > end:
+        return []
+    dates = []
+    for i in range(start, end + 1):
+        dates.append(date.fromordinal(i))
+    return dates
 
-print(get_min_max([]))
+
+date1 = date(2021, 10, 1)
+date2 = date(2021, 10, 5)
+print(*get_date_range(date1, date2), sep='\n')
