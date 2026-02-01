@@ -1,17 +1,152 @@
+# == Типы данных date и time ==
+
+# == Форматирование даты и времени ==
+# По умолчанию вывод даты и времени осуществляется в ISO-формате:
+# дата имеет следующий вид: YYYY-MM-DD
+# время имеет следующий вид: HH:MM:SS или HH:MM:SS.ffffff
+
+# Для форматированного вывода даты и времени используется метод strftime() (для обоих типов date и time).
+from datetime import date, time
+
+my_date = date(2021, 8, 10)
+my_time = time(7, 18, 34)
+print(my_date)                             # вывод в ISO-формате
+print(my_time)                             # вывод в ISO-формате
+
+print(my_date.strftime('%d/%m/%y'))        # форматированный вывод даты
+print(my_date.strftime('%A %d, %B %Y'))    # форматированный вывод даты
+print(my_time.strftime('%H.%M.%S'))        # форматированный вывод времени
+print()
+# 2021-08-10
+# 07:18:34
+# 10/08/21
+# Tuesday 10, August 2021
+# 07.18.34
+
+# Для форматирования даты и времени потребуется специальная таблица:
+# %a	Сокращенное название дня недели	Sun, Mon, …, Sat (en_US)
+                                        # Пн, Вт, ..., Вс (ru_RU)
+
+# %A	Полное название дня недели	Sunday, Monday, …, Saturday (en_US)
+                                    # понедельник, ..., воскресенье (ru_RU)
+
+# %w	Номер дня недели [0, …, 6]	0, 1, …, 6 (0=воскресенье, 6=суббота)
+
+# %d	День месяца [01, …, 31]	01, 02, …, 31
+
+# %b	Сокращенное название месяца	Jan, Feb, …, Dec (en_US);
+                                    # янв, ..., дек (ru_RU)
+
+# %B	Полное название месяца	January, February, …, December (en_US);
+                                # Январь, ..., Декабрь (ru_RU)
+
+# %m	Номер месяца [01, …,12]	01, 02, …, 12
+
+# %y	Год без века [00, …, 99]	00, 01, …, 99
+
+# %Y	Год с веком	0001, 0002, …, 2013, 2014, …, 9999
+        # В Linux год выводится без ведущих нулей:
+        # 1, 2, …, 2013, 2014, …, 9999
+
+# %H	Час (24-часовой формат) [00, …, 23]	00, 01, …, 23
+
+# %I	Час (12-часовой формат) [01, …, 12]	01, 02, …, 12
+
+# %p	До полудня или после (при 12-часовом формате)	AM, PM (en_US)
+
+# %M	Число минут [00, …, 59]	00, 01, …, 59
+
+# %S	Число секунд [00, …, 59]	00, 01, …, 59
+
+# %f	Число микросекунд	000000, 000001, …, 999999
+
+# %z	Разница с UTC в формате ±HHMM[SS[.ffffff]]	+0000, -0400, +1030, +063415, ...
+
+# %Z	Временная зона	UTC, EST, CST
+
+# %j	День года [001,366]	001, 002, …, 366
+
+# %U    Номер недели в году (неделя начинается с воскр.). Неделя, предшествующая первому воскресенью, является нулевой. [00, …, 53]
+                                                                                                                    # 00, 01, …, 53
+
+# %W    Номер недели в году (неделя начинается с пон.). Неделя, предшествующая первому понедельнику, является нулевой. [00, …, 53]
+                                                                                                                    # 00, 01, …, 53
+# %c	Дата и время	Tue Aug 16 21:30:00 1988 (en_US);
+                        # 03.01.2019 23:18:32 (ru_RU)
+
+# %x	Дата	08/16/88 (None); 08/16/1988 (en_US);
+                # 03.01.2019 (ru_RU)
+
+# %X	Время	21:30:00
+
+
+my_date = date(2021, 8, 10)
+my_time = time(7, 18, 34)
+print(my_date.strftime('%a %A %w %d %b %B %m %y %Y %H %I %p %M %S %f %z %Z %j %U %W %c %x %X'))
+print(my_time.strftime('%a %A %w %d %b %B %m %y %Y %H %I %p %M %S %f %z %Z %j %U %W %c %x %X'))
+print()
+# Tue Tuesday 2 10 Aug August 08 21 2021 00 12 AM 00 00 000000   222 32 32 Tue Aug 10 00:00:00 2021 08/10/21 00:00:00
+# Mon Monday 1 01 Jan January 01 00 1900 07 07 AM 18 34 000000   001 00 01 Mon Jan  1 07:18:34 1900 01/01/00 07:18:34
+
+# Обратите внимание, что при форматировании даты все временные характеристики сбрасываются в минимально возможные (нулевые значения).
+# Аналогично при форматировании времени все характеристики даты сбрасываются в минимально возможные.
+
+# Приведем несколько примеров форматирования даты и времени с помощью метода strftime().
+
+given_date = date(2021, 7, 17)
+print(given_date.strftime('%A %d %B %Y'))
+print(given_date.strftime('%Y/%m/%d'))
+print(given_date.strftime('%d.%m.%Y (%A, %B)'))
+print(given_date.strftime('Day of year: %j, week number: %U'))
+print()
+# Saturday 17 July 2021
+# 2021/07/17
+# 17.07.2021 (Saturday, July)
+# Day of year: 198, week number: 28
+
+given_time = time(14, 4, 29)
+print(given_time.strftime('Hours: %H, minutes: %M, seconds: %S.'))
+print(given_time.strftime('%H:%M:%S'))
+print(given_time.strftime('%I:%M:%S %p'))
+print()
+# Hours: 14, minutes: 04, seconds: 29.
+# 14:04:29
+# 02:04:29 PM
+
+
+
+# == Использование локализации ==
+# Для того чтобы использовать конкретную локализацию (перевод на язык), нужно использовать модуль locale.
+# Приведенный ниже код устанавливает русскую локализацию:
 from datetime import date
+import locale
+
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+
+my_date = date(2021, 8, 10)
+print(my_date.strftime("%A %d, %B %Y"))    # форматированный вывод даты в русской локализации
+# вторник 10, августа 2021
+
+# Для установки английской локализации используется следующий код:
+# locale.setlocale(locale.LC_ALL, 'en_EN.UTF-8')
+print()
 
 
-def saturdays_between_two_dates(start, end):
-    if start > end:
-        start, end = end, start
-    return sum(
-        [1 for i in range(start.toordinal(), end.toordinal() + 1) if date.fromordinal(i).isoweekday() == 6])
 
 
-date1 = date(2021, 11, 1)
-date2 = date(2021, 11, 22)
-print(saturdays_between_two_dates(date1, date2))
+# == Примечания ==
+# Примечание 1. Для того чтобы получить строковое представление объектов типа date и time в ISO-формате, можно воспользоваться методом isoformat().from datetime import date, time
 
-date1 = date(2020, 7, 26)
-date2 = date(2020, 7, 2)
-print(saturdays_between_two_dates(date1, date2))
+my_date = date(2021, 12, 31)
+my_time = time(21, 15, 17)
+
+print('Дата: ' + my_date.isoformat())       # Дата: 2021-12-31
+print('Время: ' + my_time.isoformat())      # Время: 21:15:17
+
+# Аналогичный результат можно получить с помощью вызова встроенной функции str():
+
+my_date = date(2021, 12, 31)
+my_time = time(21, 15, 17)
+
+print('Дата: ' + str(my_date))
+print('Время: ' + str(my_time))
