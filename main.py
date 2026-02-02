@@ -1,7 +1,9 @@
 from datetime import date
 
-andrew = date(1992, 8, 24)
+# 1
+print(min(date.fromisoformat(input()) for _ in range(2)).strftime('%d-%m (%Y)'))
 
-print(andrew.strftime('%Y-%m'))  # выводим дату в формате YYYY-MM
-print(andrew.strftime('%B (%Y)'))  # выводим дату в формате month_name (YYYY)
-print(andrew.strftime('%Y-%j'))  # выводим дату в формате YYYY-day_number
+# 2
+date = date.fromisoformat(input())
+date1 = date.fromisoformat(input())
+print(min(date, date1).strftime('%d-%m (%Y)'))
