@@ -1,13 +1,14 @@
 from datetime import date
 
 
-def print_good_dates(dates):
-    if dates:
-        sort_dates = sorted(filter(lambda x: x.year == 1992 and x.day + x.month == 29, dates))
-        print(*map(lambda i: i.strftime("%B %d, %Y"), sort_dates), sep='\n')
+def is_correct(day, month, year):
+    while True:
+        try:
+            date(year, month, day)
+            return True
+        except:
+            return False
 
 
-dates = [date(1992, 10, 19), date(1991, 12, 6), date(1992, 9, 20)]
-print_good_dates(dates)
-
-print_good_dates([])
+print(is_correct(31, 12, 2021))
+print(is_correct(31, 13, 2021))
