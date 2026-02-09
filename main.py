@@ -1,6 +1,6 @@
-from datetime import date
+from datetime import datetime, timedelta
 
-today = date(2021, 11, 4)
-birthday = date(2022, 10, 6)
-days = (birthday - today).days
-print(days)
+pattern, day = '%d.%m.%Y', timedelta(days=1)
+data = datetime.strptime(input(), pattern)
+print((data - day).strftime(pattern))
+print((data + day).strftime(pattern))
