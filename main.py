@@ -1,12 +1,10 @@
 from datetime import datetime, timedelta
 
 # 1
-h, m, s = map(int, input().split(':'))
-td = timedelta(hours=h, minutes=m, seconds=s)
-print(td.seconds)
+print((datetime.strptime(input(), '%H:%M:%S') + timedelta(seconds=int(input()))).time())
 
 # 2
-pattern = '%H:%M:%S'
-start = datetime.strptime('00:00:00', pattern)
-data = datetime.strptime(input(), pattern)
-print(int((data - start).total_seconds()))
+h, m, s = map(int, input().split(':'))
+td = timedelta(hours=h, minutes=m, seconds=s) + timedelta(seconds=int(input()))
+res = datetime(1, 1, 1) + td
+print(res.strftime('%H:%M:%S'))
