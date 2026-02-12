@@ -1,26 +1,17 @@
-from datetime import timedelta, datetime as dt
+from datetime import datetime as dt
 
-# 1
-start = dt.strptime(input(), '%d.%m.%Y')
-end = dt.strptime(input(), '%d.%m.%Y')
+pattern = '%d.%m.%Y'
+d = {}
+for _ in range(int(input())):
+    val, key = input().rsplit(' ', 1)
+    d.setdefault(key, []).append(val)
 
-while not (start.day + start.month) % 2:
-    start += timedelta(days=1)
+min_date = min(d, key=lambda x: dt.strptime(x, pattern))
+names = d[min_date]
+print(min_date, (names[0] if len(names) == 1 else len(names)))
 
-while start <= end:
-    if start.isoweekday() != 4 and start.isoweekday() != 1:
-        print(start.strftime('%d.%m.%Y'))
-    start += timedelta(days=3)
-
-# 2
-start = dt.strptime(input(), '%d.%m.%Y')
-end = dt.strptime(input(), '%d.%m.%Y')
-
-current = start
-while current <= end and (current.day + current.month) % 2 == 0:
-    current = dt.fromordinal(current.toordinal() + 1)
-
-while current <= end:
-    if current.isoweekday() != 4 and current.isoweekday() != 1:
-        print(current.strftime('%d.%m.%Y'))
-    current = dt.fromordinal(current.toordinal() + 3)
+# for _ in range(int(input())):
+#     val, key = input().rsplit(' ', 1)
+#     if key not in d:
+#         d[key] = []
+#     d[key].append(val)
