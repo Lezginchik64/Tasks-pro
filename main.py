@@ -1,21 +1,26 @@
-from datetime import datetime, timedelta
+from datetime import timedelta, datetime as dt
 
 # 1
-now = datetime.strptime(input(), '%d.%m.%Y %H:%M')
-now_time = timedelta(hours=now.hour, minutes=now.minute)
-if now.weekday() < 5 and timedelta(hours=9) <= now_time < timedelta(hours=21):
-    print((timedelta(hours=21) - now_time).seconds // 60)
-elif now.weekday() > 5 and timedelta(hours=10) <= now_time < timedelta(hours=18):
-    print((timedelta(hours=18) - now_time).seconds // 60)
-else:
-    print("Магазин не работает")
+start = dt.strptime(input(), '%d.%m.%Y')
+end = dt.strptime(input(), '%d.%m.%Y')
+
+while not (start.day + start.month) % 2:
+    start += timedelta(days=1)
+
+while start <= end:
+    if start.isoweekday() != 4 and start.isoweekday() != 1:
+        print(start.strftime('%d.%m.%Y'))
+    start += timedelta(days=3)
 
 # 2
-now = datetime.strptime(input(), '%d.%m.%Y %H:%M')
-now_time = timedelta(hours=now.hour, minutes=now.minute)
-work_time = (timedelta(hours=9), timedelta(hours=21)) if now.weekday() in range(5) else (timedelta(hours=10),
-                                                                                         timedelta(hours=18))
-if now_time >= work_time[1] or now_time < work_time[0]:
-    print("Магазин не работает")
-else:
-    print((work_time[1] - now_time).seconds // 60)
+start = dt.strptime(input(), '%d.%m.%Y')
+end = dt.strptime(input(), '%d.%m.%Y')
+
+current = start
+while current <= end and (current.day + current.month) % 2 == 0:
+    current = dt.fromordinal(current.toordinal() + 1)
+
+while current <= end:
+    if current.isoweekday() != 4 and current.isoweekday() != 1:
+        print(current.strftime('%d.%m.%Y'))
+    current = dt.fromordinal(current.toordinal() + 3)
