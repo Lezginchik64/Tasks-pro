@@ -1,14 +1,28 @@
 import time as t
 
 
-def calculate_it(funk, *args):
-    start = t.monotonic()
-    return funk(*args), t.monotonic() - start
+def get_the_fastest_func(funcs, arg):
+    time = {}
+    for func in funcs:
+        start = t.monotonic()
+        func(arg)
+        time[func] = t.monotonic() - start
+    return min(time, key=time.get)
 
 
-def add(a, b, c):
+def add(a):
     t.sleep(3)
-    return a + b + c
+    return a ** 2
 
 
-print(calculate_it(add, 1, 2, 3))
+def add2(a):
+    t.sleep(2)
+    return a ** 2
+
+
+def add3(a):
+    t.sleep(1)
+    return a ** 2
+
+
+print(get_the_fastest_func([add, add2, add3], 2))
