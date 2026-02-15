@@ -1,28 +1,139 @@
-import time as t
+# == Тип данных struct_time ==
+# В модуле time имеется единственный тип данных, который называется struct_time.
+# Данный тип является именованным кортежем, представляющим информацию о времени.
+# Структура представления времени struct_time чем-то похожа на тип datetime, который изучался ранее.
+
+# Именованные кортежи будут изучаться позже в рамках этого курса.
+# Они подобны обычным кортежам за тем исключением, что к их полям можно обращаться не только по индексу, но и по названию.
+
+# Именованный кортеж struct_time состоит из следующих атрибутов:
+# Номер индекса  Атрибут	    Значение
+    # 0	        tm_year	    диапазон от 0000 до 9999
+    # 1 	    tm_mon	    диапазон от 1 до 12
+    # 2	        tm_mday	    диапазон от 1 до 31
+    # 3	        tm_hour	    диапазон от 0 до 23
+    # 4	        tm_min	    диапазон от 0 до 59
+    # 5	        tm_sec	    диапазон от 0 до 61
+    # 6	        tm_wday	    диапазон от 0 до 6, понедельник = 0
+    # 7	        tm_yday	    диапазон от 1 до 366
+    # 8	        tm_isdst	    значения -1, 0, 1
+    # N/A	    tm_zone	    сокращение названия часового пояса
+    # N/A	    tm_gmtoff	смещение к востоку от UTC в секундах
+
+# Создавать объекты типа struct_time можно на основе кортежа:
+import time
+
+time_tuple = (2021, 8, 31, 5, 31, 58, 1, 243, 0)
+time_obj = time.struct_time(time_tuple)
+# На практике редко приходится собственноручно создавать объекты типа struct_time.
+# Обычно используют функции модуля time, которые сами создают и оперируют ими.
+# Такие функции, как localtime(), gmtime(), asctime() и другие, принимают объект time.struct_time в качестве аргумента или возвращают его.
 
 
-def get_the_fastest_func(funcs, arg):
-    time = {}
-    for func in funcs:
-        start = t.monotonic()
-        func(arg)
-        time[func] = t.monotonic() - start
-    return min(time, key=time.get)
 
 
-def add(a):
-    t.sleep(3)
-    return a ** 2
+# == Функция localtime() ==
+# Функция localtime() принимает в качестве аргумента количество секунд, прошедших с начала эпохи, и возвращает кортеж struct_time в локальном времени.
+# Если функции localtime() не передан никакой аргумент или передан аргумент None, то будет использовано текущее время, возвращаемое функцией time().
+import time
+
+result = time.localtime(1630387918)
+print('Результат:', result)
+print('Год:', result.tm_year)
+print('Месяц:', result.tm_mon)
+print('День:', result.tm_mday)
+print('Час:', result.tm_hour)
+# Результат: time.struct_time(tm_year=2021, tm_mon=8, tm_mday=31, tm_hour=8, tm_min=31, tm_sec=58, tm_wday=1, tm_yday=243, tm_isdst=0)
+# Год: 2021
+# Месяц: 8
+# День: 31
+# Час: 8
+
+# Обратите внимание на то, что мы можем обращаться к данным именованного кортежа struct_time и по индексам.
+import time
+
+result = time.localtime(1630387918)
+print('Результат:', result)
+print('Год:', result[0])
+print('Месяц:', result[1])
+print('День:', result[2])
+print('Час:', result[3])
+print()
 
 
-def add2(a):
-    t.sleep(2)
-    return a ** 2
 
 
-def add3(a):
-    t.sleep(1)
-    return a ** 2
+# == Функция gmtime() ==
+# Функция gmtime() принимает в качестве аргумента количество секунд, прошедших с начала эпохи, и возвращает кортеж struct_time в UTC.
+# Если функции gmtime() не передан никакой аргумент или передан аргумент None, то будет использовано текущее время, возвращаемое функцией time().
+import time
+
+result = time.gmtime(1630387918)
+print('Результат:', result)
+print('Год:', result.tm_year)
+print('Месяц:', result.tm_mon)
+print('День:', result.tm_mday)
+print('Час:', result.tm_hour)
+print()
+# Результат: time.struct_time(tm_year=2021, tm_mon=8, tm_mday=31, tm_hour=5, tm_min=31, tm_sec=58, tm_wday=1, tm_yday=243, tm_isdst=0)
+# Год: 2021
+# Месяц: 8
+# День: 31
+# Час: 5
+# Обратите внимание на разницу в часах. В Москве используется сдвиг UTC+3:00, поэтому количество часов в локальном времени на 3 больше, чем по UTC.
 
 
-print(get_the_fastest_func([add, add2, add3], 2))
+
+
+# == Функция mktime() ==
+# Функция mktime() принимает struct_time (или кортеж, содержащий 9 значений, относящихся к struct_time) в качестве аргумента и возвращает количество секунд, прошедших с начала эпохи, в местном времени.
+import time
+
+time_tuple = (2021, 8, 31, 5, 31, 58, 1, 243, 0)
+time_obj = time.mktime(time_tuple)
+print('Локальное время в секундах:', time_obj)
+# Локальное время в секундах: 1630373518.0
+# Функция mktime() является обратной к функции localtime().
+
+
+
+
+# == Функция asctime() ==
+# Функция asctime() принимает struct_time (или кортеж, содержащий 9 значений, относящихся к struct_time) в качестве аргумента и возвращает строку, представляющую собой дату и время.
+import time
+
+time_tuple = (2021, 8, 31, 5, 31, 58, 1, 243, 0)
+result = time.asctime(time_tuple)
+print('Результат:', result)
+# Результат: Tue Aug 31 05:31:58 2021
+
+# Функции ctime() и asctime() имеют практически одинаковый функционал за тем исключением, что первая функция принимает количество прошедших от начала эпохи секунд, а вторая принимает struct_time (или соответствующий кортеж).
+import time
+
+seconds = 1530377118
+time_tuple = (2021, 8, 31, 5, 31, 58, 1, 243, 0)
+print(time.ctime(seconds))          # Sat Jun 30 19:45:18 2018
+print(time.asctime(time_tuple))     # Tue Aug 31 05:31:58 2021
+print()
+
+
+
+# == Функция strftime() ==
+# Функция strftime принимает строку с некоторым набором правил для форматирования и объект struct_time (или соответствующий кортеж) в качестве аргументов и возвращает строку с датой в зависимости от использованного формата.
+import time
+
+time_obj = time.localtime()
+result = time.strftime('%d.%m.%Y, %H:%M:%S', time_obj)
+print(result)       # 16.02.2026, 03:07:39
+
+
+
+# == Функция strptime() ==
+# Функция strptime() делает разбор строки в зависимости от использованного формата и возвращает объект struct_time.
+import time
+
+time_string = '1 September, 2021'
+result = time.strptime(time_string, '%d %B, %Y')
+print(result)
+# time.struct_time(tm_year=2021, tm_mon=9, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=2, tm_yday=244, tm_isdst=-1)
+# Обратите внимание, что строка time_string должна полностью соответствовать формату %d %B, %Y, в противном случае возникнет исключение ValueError.
