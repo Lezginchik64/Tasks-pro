@@ -1,139 +1,280 @@
-# == Тип данных struct_time ==
-# В модуле time имеется единственный тип данных, который называется struct_time.
-# Данный тип является именованным кортежем, представляющим информацию о времени.
-# Структура представления времени struct_time чем-то похожа на тип datetime, который изучался ранее.
-
-# Именованные кортежи будут изучаться позже в рамках этого курса.
-# Они подобны обычным кортежам за тем исключением, что к их полям можно обращаться не только по индексу, но и по названию.
-
-# Именованный кортеж struct_time состоит из следующих атрибутов:
-# Номер индекса  Атрибут	    Значение
-    # 0	        tm_year	    диапазон от 0000 до 9999
-    # 1 	    tm_mon	    диапазон от 1 до 12
-    # 2	        tm_mday	    диапазон от 1 до 31
-    # 3	        tm_hour	    диапазон от 0 до 23
-    # 4	        tm_min	    диапазон от 0 до 59
-    # 5	        tm_sec	    диапазон от 0 до 61
-    # 6	        tm_wday	    диапазон от 0 до 6, понедельник = 0
-    # 7	        tm_yday	    диапазон от 1 до 366
-    # 8	        tm_isdst	    значения -1, 0, 1
-    # N/A	    tm_zone	    сокращение названия часового пояса
-    # N/A	    tm_gmtoff	смещение к востоку от UTC в секундах
-
-# Создавать объекты типа struct_time можно на основе кортежа:
-import time
-
-time_tuple = (2021, 8, 31, 5, 31, 58, 1, 243, 0)
-time_obj = time.struct_time(time_tuple)
-# На практике редко приходится собственноручно создавать объекты типа struct_time.
-# Обычно используют функции модуля time, которые сами создают и оперируют ими.
-# Такие функции, как localtime(), gmtime(), asctime() и другие, принимают объект time.struct_time в качестве аргумента или возвращают его.
+# == Модуль calendar ==
+# По умолчанию модуль calendar следует григорианскому календарю, где понедельник является первым днем недели (имеет номер 0), а воскресенье — последним днем недели (имеет номер 6).
+# В отличие от уже изученных модулей datetime и time, которые также предоставляют функции, связанные с календарем, модуль calendar предоставляет основные функции, связанные с отображением и манипулированием календарями.
 
 
 
+# == Атрибуты модуля calendar ==
+# В отличие от функций, выполняющих определенную работу, в модуле calendar есть атрибуты, которые возвращают константные (общепринятые) значения, полезные при решении практических задач.
 
-# == Функция localtime() ==
-# Функция localtime() принимает в качестве аргумента количество секунд, прошедших с начала эпохи, и возвращает кортеж struct_time в локальном времени.
-# Если функции localtime() не передан никакой аргумент или передан аргумент None, то будет использовано текущее время, возвращаемое функцией time().
-import time
 
-result = time.localtime(1630387918)
-print('Результат:', result)
-print('Год:', result.tm_year)
-print('Месяц:', result.tm_mon)
-print('День:', result.tm_mday)
-print('Час:', result.tm_hour)
-# Результат: time.struct_time(tm_year=2021, tm_mon=8, tm_mday=31, tm_hour=8, tm_min=31, tm_sec=58, tm_wday=1, tm_yday=243, tm_isdst=0)
-# Год: 2021
-# Месяц: 8
-# День: 31
-# Час: 8
+# -- Атрибут day_name --
+# Атрибут calendar.day_name возвращает итерируемый объект, содержащий названия дней недели на английском языке.
+import calendar
 
-# Обратите внимание на то, что мы можем обращаться к данным именованного кортежа struct_time и по индексам.
-import time
+for name in calendar.day_name:
+    print(name)
+print()
+# Monday
+# Tuesday
+# Wednesday
+# Thursday
+# Friday
+# Saturday
+# Sunday
+# Обратите внимание на то, что при обращении к атрибуту мы не ставим скобки, которые ставим при вызове функции.
 
-result = time.localtime(1630387918)
-print('Результат:', result)
-print('Год:', result[0])
-print('Месяц:', result[1])
-print('День:', result[2])
-print('Час:', result[3])
+# Для локализации на русский язык мы используем код:
+import calendar, locale
+
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+for name in calendar.day_name:
+    print(name)
+print()
+# понедельник
+# вторник
+# среда
+# четверг
+# пятница
+# суббота
+# воскресенье
+
+# Для преобразования итерируемого объекта в список мы используем следующий код:
+import calendar
+
+names = list(calendar.day_name)
+print(names)
+# ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+
+
+
+# -- Атрибут day_abbr --
+# Атрибут calendar.day_abbr возвращает итерируемый объект, содержащий сокращенные названия дней недели.
+import calendar, locale
+
+for name in calendar.day_abbr:
+    print(name)
+
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+
+for name in calendar.day_abbr:
+    print(name)
+# Mon
+# Tue
+# Wed
+# Thu
+# Fri
+# Sat
+# Sun
+# Пн
+# Вт
+# Ср
+# Чт
+# Пт
+# Сб
+# Вс
+
+
+
+
+# -- Атрибут month_name --
+# Атрибут calendar.month_name возвращает итерируемый объект, содержащий названия месяцев года.
+import calendar, locale
+
+english_names = list(calendar.month_name)
+print(english_names)
+# ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+
+russian_names = list(calendar.month_name)
+print(russian_names)
+# ['', 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+
+# Обратите внимание: атрибут month_name соответствует обычному соглашению, что январь – это месяц номер 1, поэтому список имеет длину в 13 элементов, первый из которых – пустая строка.
+
+
+
+
+# -- Атрибут month_abbr --
+# Атрибут calendar.month_abbr возвращает итерируемый объект, содержащий сокращенные названия месяцев года.
+import calendar, locale
+
+english_names = list(calendar.month_abbr)
+print(english_names)
+# ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+
+russian_names = list(calendar.month_abbr)
+print(russian_names)
+# ['', 'янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
+
+
+
+
+# -- Атрибуты номеров дней недели --
+# Для получения номеров дней недели можно использовать атрибуты MONDAY, TUESDAY, ..., SUNDAY.
+import calendar
+
+print(calendar.MONDAY)      # 0
+print(calendar.TUESDAY)     # 1
+print(calendar.WEDNESDAY)   # 2
+print(calendar.THURSDAY)    # 3
+print(calendar.FRIDAY)      # 4
+print(calendar.SATURDAY)    # 5
+print(calendar.SUNDAY)      # 6
 print()
 
 
 
 
-# == Функция gmtime() ==
-# Функция gmtime() принимает в качестве аргумента количество секунд, прошедших с начала эпохи, и возвращает кортеж struct_time в UTC.
-# Если функции gmtime() не передан никакой аргумент или передан аргумент None, то будет использовано текущее время, возвращаемое функцией time().
-import time
 
-result = time.gmtime(1630387918)
-print('Результат:', result)
-print('Год:', result.tm_year)
-print('Месяц:', result.tm_mon)
-print('День:', result.tm_mday)
-print('Час:', result.tm_hour)
-print()
-# Результат: time.struct_time(tm_year=2021, tm_mon=8, tm_mday=31, tm_hour=5, tm_min=31, tm_sec=58, tm_wday=1, tm_yday=243, tm_isdst=0)
-# Год: 2021
-# Месяц: 8
-# День: 31
-# Час: 5
-# Обратите внимание на разницу в часах. В Москве используется сдвиг UTC+3:00, поэтому количество часов в локальном времени на 3 больше, чем по UTC.
+# == Функции модуля calendar ==
+# Модуль calendar содержит множество полезных функций. Приведем основные из них.
+
+
+# -- Функция setfirstweekday() --
+# По умолчанию в модуле calendar понедельник является первым днем недели (имеет номер 0), а воскресенье – последним днем недели (имеет номер 6).
+# Функция setfirstweekday() позволяет изменить поведение по умолчанию и устанавливает заданный день недели в качестве начала недели.
+# Например, чтобы установить в качестве первого дня воскресенье, мы используем следующий код:
+import calendar
+
+calendar.setfirstweekday(calendar.SUNDAY)     # эквивалентно calendar.setfirstweekday(6)
+# На практике следует использовать константы calendar.MONDAY, calendar.TUESDAY, ...,calendar.SUNDAY , а не значения 0, 1, ..., 6.
 
 
 
-
-# == Функция mktime() ==
-# Функция mktime() принимает struct_time (или кортеж, содержащий 9 значений, относящихся к struct_time) в качестве аргумента и возвращает количество секунд, прошедших с начала эпохи, в местном времени.
-import time
-
-time_tuple = (2021, 8, 31, 5, 31, 58, 1, 243, 0)
-time_obj = time.mktime(time_tuple)
-print('Локальное время в секундах:', time_obj)
-# Локальное время в секундах: 1630373518.0
-# Функция mktime() является обратной к функции localtime().
+# -- Функция firstweekday() --
+# Функция firstweekday() возвращает целое число, означающее день недели, установленный в качестве начала недели.
+print(calendar.firstweekday())      # 0
+calendar.setfirstweekday(calendar.SUNDAY)
+print(calendar.firstweekday())      # 6
 
 
 
+# -- Функция isleap() --
+# В курсе «Поколение Python: курс для начинающих» мы решали задачу, в которой требовалось проверить, является ли год високосным.
+# Напомним, что год является високосным, если его номер кратен 4, но не кратен 100, или если он кратен 400.
+# Модуль calendar содержит функцию isleap(), которая осуществляет нужную проверку.
+import calendar
 
-# == Функция asctime() ==
-# Функция asctime() принимает struct_time (или кортеж, содержащий 9 значений, относящихся к struct_time) в качестве аргумента и возвращает строку, представляющую собой дату и время.
-import time
-
-time_tuple = (2021, 8, 31, 5, 31, 58, 1, 243, 0)
-result = time.asctime(time_tuple)
-print('Результат:', result)
-# Результат: Tue Aug 31 05:31:58 2021
-
-# Функции ctime() и asctime() имеют практически одинаковый функционал за тем исключением, что первая функция принимает количество прошедших от начала эпохи секунд, а вторая принимает struct_time (или соответствующий кортеж).
-import time
-
-seconds = 1530377118
-time_tuple = (2021, 8, 31, 5, 31, 58, 1, 243, 0)
-print(time.ctime(seconds))          # Sat Jun 30 19:45:18 2018
-print(time.asctime(time_tuple))     # Tue Aug 31 05:31:58 2021
-print()
+print(calendar.isleap(2020))    # True
+print(calendar.isleap(2021))    # False
 
 
 
-# == Функция strftime() ==
-# Функция strftime принимает строку с некоторым набором правил для форматирования и объект struct_time (или соответствующий кортеж) в качестве аргументов и возвращает строку с датой в зависимости от использованного формата.
-import time
+# -- Функция leapdays() --
+# Функция leapdays(y1, y2) возвращает количество високосных лет в диапазоне от y1 до y2 (не включительно), где y1 и y2 – годы.
+import calendar
 
-time_obj = time.localtime()
-result = time.strftime('%d.%m.%Y, %H:%M:%S', time_obj)
-print(result)       # 16.02.2026, 03:07:39
+print(calendar.leapdays(2020, 2025))    # 2
+# так как в нужном диапазоне [2020;2025) находятся два високосных года: 2020 и 2024.
+# Эта функция работает для диапазонов, охватывающих смену столетий.
 
 
 
-# == Функция strptime() ==
-# Функция strptime() делает разбор строки в зависимости от использованного формата и возвращает объект struct_time.
-import time
+# -- Функция weekday() --
+# Функция weekday(year, month, day) возвращает день недели в виде целого числа (где 0 – понедельник, 6 – воскресенье) для заданной даты.
+# Аргументы функции:
+    # year – год начиная с 1970
+    # month – месяц в диапазоне 1−12
+    # day – число в диапазоне 1−31
+import calendar
 
-time_string = '1 September, 2021'
-result = time.strptime(time_string, '%d %B, %Y')
-print(result)
-# time.struct_time(tm_year=2021, tm_mon=9, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=2, tm_yday=244, tm_isdst=-1)
-# Обратите внимание, что строка time_string должна полностью соответствовать формату %d %B, %Y, в противном случае возникнет исключение ValueError.
+print(calendar.weekday(2021, 9, 1))     # среда
+print(calendar.weekday(2021, 9, 2))     # четверг
+# 2
+# 3
+
+
+
+# -- Функция monthrange() --
+# Функция monthrange(year, month) возвращает день недели первого дня месяца и количество дней в месяце в виде кортежа для указанного года year и месяца month.
+import calendar
+
+print(calendar.monthrange(2022, 1))     # январь 2022 года
+print(calendar.monthrange(2021, 9))     # сентябрь 2021 года
+# (5, 31)
+# (2, 30)
+
+
+
+# -- Функция monthcalendar() --
+# Функция monthcalendar(year, month) возвращает матрицу, представляющую календарь на месяц. Каждая строка матрицы представляет неделю.
+import calendar
+
+print(*calendar.monthcalendar(2021, 9), sep='\n')
+# [0, 0, 1, 2, 3, 4, 5]
+# [6, 7, 8, 9, 10, 11, 12]
+# [13, 14, 15, 16, 17, 18, 19]
+# [20, 21, 22, 23, 24, 25, 26]
+# [27, 28, 29, 30, 0, 0, 0]
+# Обратите внимание на то, что дни, которые не входят в указанный месяц, представлены нулями.
+# При этом каждая неделя начинается с понедельника, если иное не установлено функцией setfirstweekday().
+
+
+
+# -- Функция month() --
+# Функция month(year, month, w=0, l=0) возвращает календарь на месяц в многострочной строке.
+# Аргументами функции являются: year (год), month (месяц), w (ширина столбца даты) и l (количество строк, отводимое на неделю).
+# Аргументы w и l имеют значения по умолчанию, поэтому их можно не передавать явно при вызове функции.
+
+print(calendar.month(2026, 6))
+#  июня 2026
+# вс пн вт ср чт пт сб
+#     1  2  3  4  5  6
+#  7  8  9 10 11 12 13
+# 14 15 16 17 18 19 20
+# 21 22 23 24 25 26 27
+# 28 29 30
+
+
+
+# -- Функция calendar() --
+# Функция calendar(year, w=2, l=1, c=6, m=3) возвращает календарь на весь год в виде многострочной строки. Аргументами функции являются:
+# year (год), w (ширина столбца даты), l (количество строк, отводимые на неделю), c (количество пробелов между столбцами месяцев), m (количество столбцов).
+# Аргументы w, l, c, m имеют значения по умолчанию, поэтому их можно не передавать явно при вызове функции.
+import calendar
+
+print(calendar.calendar(2026))
+# в выводе полный календарь на год
+
+import calendar, locale
+
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+print(calendar.calendar(2026, m=4))
+# календарь на русском
+
+
+
+# -- Функции prmonth(), prcal() --
+# Функция prmonth(theyear, themonth, w=0, l=0) печатает календарь на месяц, возвращенный функцией month(theyear, themonth, w=0, l=0).
+# Функция prcal(year, w=0, l=0, c=6, m=3) печатает календарь на весь год, возвращенный функцией calendar(year, w=0, l=0, c=6, m=3).
+import calendar
+
+calendar.prmonth(2021, 9)   # календарь на месяц
+calendar.prcal(2021)                        # календарь на год
+
+# эквивалентен коду:
+import calendar
+
+print(calendar.month(2021, 9))
+print(calendar.calendar(2021))
+
+
+
+
+# == Примечания ==
+# Примечание. Объекты, доступные по атрибутам day_name, day_abbr, month_name и month_abbr, поддерживают индексацию.
+import calendar
+
+print(calendar.day_name[1])
+print(calendar.day_abbr[1])
+print(calendar.month_name[1])
+print(calendar.month_abbr[1])
+# Tuesday
+# Tue
+# January
+# Jan
