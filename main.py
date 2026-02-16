@@ -2,10 +2,8 @@ from datetime import datetime as dt
 import calendar
 
 # 1
-d = dt.strptime(input(), '%Y %b')
-print(calendar.month(d.year, d.month))
+d = dt.strptime(input(), '%Y-%m-%d')
+print(list(calendar.day_name)[d.weekday()])     # В разы быстрее 2 способа
 
 # 2
-year, month = input().split()
-year, month = int(year), list(calendar.month_abbr).index(month)     # month_abbr - список с сокращенными названиями месяцев
-calendar.prmonth(year, month)   # тоже самое, только работает без print
+print(dt.strptime(input(), '%Y-%m-%d').strftime('%A'))
