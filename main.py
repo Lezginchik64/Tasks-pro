@@ -1,10 +1,9 @@
 import sys
-from datetime import datetime
 
 # 1
-d = [datetime.strptime(i.strip(), '%Y-%m-%d') for i in sys.stdin]
-print((max(d) - min(d)).days)
+numbers = [int(line.strip("\n")) for line in sys.stdin]
+print("Анри" if (len(numbers) + numbers[-1]) % 2 else "Дима")
 
 # 2
-dates = [datetime.fromisoformat(line.strip()) for line in sys.stdin]
-print((max(dates) - min(dates)).days)
+s = tuple(int(i.strip()) for i in sys.stdin.readlines())
+print(('Дима', 'Анри')[(len(s) - 1) % 2 == s[-1] % 2])
