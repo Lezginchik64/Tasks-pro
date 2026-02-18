@@ -1,9 +1,10 @@
 import sys
+from datetime import datetime
 
 # 1
-d = list(map(lambda x: x[::-1].strip(), sys.stdin))
-print(*d, sep='\n')
+d = [datetime.strptime(i.strip(), '%Y-%m-%d') for i in sys.stdin]
+print((max(d) - min(d)).days)
 
 # 2
-for line in sys.stdin:
-    print(line.strip()[::-1])
+dates = [datetime.fromisoformat(line.strip()) for line in sys.stdin]
+print((max(dates) - min(dates)).days)
