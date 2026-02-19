@@ -1,9 +1,7 @@
 import sys
 
-l = [int(i.strip()) for i in sys.stdin]
-if l:
-    print(f'Рост самого низкого ученика: {min(l)}')
-    print(f'Рост самого высокого ученика: {max(l)}')
-    print(f'Средний рост: {sum(l) // len(l)}')
-else:
-    print('нет учеников')
+# 1
+print(sum([1 for i in sys.stdin if i.lstrip()[0] == '#']))
+
+# 2
+print(sum(1 for row in sys.stdin if row.lstrip().startswith('#')))
