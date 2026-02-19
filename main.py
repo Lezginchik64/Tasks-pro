@@ -1,9 +1,9 @@
 import sys
 
-# 1
-numbers = [int(line.strip("\n")) for line in sys.stdin]
-print("Анри" if (len(numbers) + numbers[-1]) % 2 else "Дима")
-
-# 2
-s = tuple(int(i.strip()) for i in sys.stdin.readlines())
-print(('Дима', 'Анри')[(len(s) - 1) % 2 == s[-1] % 2])
+l = [int(i.strip()) for i in sys.stdin]
+if l:
+    print(f'Рост самого низкого ученика: {min(l)}')
+    print(f'Рост самого высокого ученика: {max(l)}')
+    print(f'Средний рост: {sum(l) // len(l)}')
+else:
+    print('нет учеников')
