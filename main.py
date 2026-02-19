@@ -1,7 +1,7 @@
 import sys
 
 # 1
-print(sum([1 for i in sys.stdin if i.lstrip()[0] == '#']))
+print(*[i for i in sys.stdin if not i.lstrip().startswith('#')], sep='')
 
 # 2
-print(sum(1 for row in sys.stdin if row.lstrip().startswith('#')))
+[sys.stdout.write(i) for i in sys.stdin if not i.lstrip().startswith('#')]
