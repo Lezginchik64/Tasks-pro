@@ -1,16 +1,23 @@
 import sys
 
 # 1
-d = {}
-l = [i for i in sys.stdin]
-for line in l[:-1]:
-    news, cat, true = line.strip().split(' / ')
-    d.setdefault(cat, []).append((news, true))
-category = l[-1].strip()
-if category in d:
-    print(*[i[0] for i in sorted(d[category], key=lambda x: (x[1], x[0]))], sep='\n')
+num = [int(i) for i in sys.stdin]
+a = map(lambda a, b: b - a, num, num[1:])
+b = map(lambda a, b: b // a, num, num[1:])
+if len(set(a)) == 1:
+    print("Арифметическая прогрессия")
+elif len(set(b)) == 1:
+    print("Геометрическая прогрессия")
+else:
+    print("Не прогрессия")
 
 # 2
-news = [i.strip().split(' / ') for i in sys.stdin]
-true_news = list(filter(lambda x: x[1] == news[-1][0], news[:-1]))
-print(*[i[0] for i in sorted(true_news, key=lambda x: (float(x[2]), x[0]))], sep='\n')
+num = [int(i.strip()) for i in sys.stdin]
+arif = set([num[i] - num[i - 1] for i in range(1, len(num))])
+geom = set([num[i] // num[i - 1] for i in range(1, len(num))])
+if len(arif) == 1:
+    print("Арифметическая прогрессия")
+elif len(geom) == 1:
+    print("Геометрическая прогрессия")
+else:
+    print("Не прогрессия")
