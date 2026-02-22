@@ -1,17 +1,18 @@
 import csv
 
 # 1
-with open('sales.csv', encoding='utf-8', newline='') as file:
-    # file.readline() так можно пропустить первую строку
-    rows = csv.reader(file, delimiter=';')
-    next(rows)  # пропуск первой строки
-    for row in rows:
-        if int(row[1]) > int(row[2]):
-            print(row[0])
+with open('salary_data.csv', encoding="utf-8") as file:
+    reader = csv.reader(file, delimiter=';')
+    next(reader)
+    d = {}
+    for i in reader:
+        d.setdefault(i[0], []).append(int(i[1]))
+    print(*sorted(d, key=lambda x: sum(d[x]) // len(d[x])), sep='\n')
 
 # 2
-with open('sales.csv', encoding="utf-8") as file:
-    reader = csv.DictReader(file, delimiter=';')
-    for row in reader:
-        if int(row['new_price']) < int(row['old_price']):
-            print(row['name'])
+with open('salary_data.csv', encoding="utf-8") as file:
+    reader = list(csv.reader(file, delimiter=';'))
+    d = {}
+    for k, v in reader[1:]:
+        d[k] = d.get(k, []) + [int(v)]
+    print(*sorted(d, key=lambda x: sum(d[x]) // len(d[x])), sep='\n')
