@@ -1,29 +1,14 @@
 import csv
 
-# 1
-def csv_columns(filename):
+with open('data.csv', encoding="utf-8", newline='') as file_in:
+    reader = csv.DictReader(file_in)
+    d = {}
+    for row in reader:
+        domain = row['email'].split('@')[1]     # делаем домены из почты (было asda.asd@gmail.com, стало gmail.com)
+        d[domain] = d.get(domain, 0) + 1    # добавляем домены (ключи) в словарь и считаем их количество (значения)
+sorted_domains = sorted(d.items(), key=lambda x: (x[1], x[0]))
 
-    with open(filename, encoding="utf-8") as file_in:
-        rows = list(csv.reader(file_in))
-        return {key: value for key, *value in zip(*rows)}
-
-# 2
-def csv_columns(filename):
-    res = {}
-    with open(filename, encoding='utf-8') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            for column, value in row.items():
-                res.setdefault(column, []).append(value)
-    return res
-
-
-text = '''name,grade
-Timur,5
-Arthur,4
-Anri,5'''
-
-with open('grades.csv', 'w') as file:
-    file.write(text)
-
-print(csv_columns('grades.csv'))
+with open('domain_usage.csv', 'w', encoding='utf-8', newline='') as file:
+    writer = csv.writer(file, delimiter=',')
+    writer.writerow(['domain', 'count'])  # запись заголовков
+    writer.writerows(sorted_domains)
