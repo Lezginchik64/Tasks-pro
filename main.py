@@ -1,14 +1,11 @@
 import csv
 
-with open('data.csv', encoding="utf-8", newline='') as file_in:
-    reader = csv.DictReader(file_in)
-    d = {}
+d = {}
+with open('wifi.csv', encoding="utf-8") as file_in:
+    reader = csv.DictReader(file_in, delimiter=';')
     for row in reader:
-        domain = row['email'].split('@')[1]     # делаем домены из почты (было asda.asd@gmail.com, стало gmail.com)
-        d[domain] = d.get(domain, 0) + 1    # добавляем домены (ключи) в словарь и считаем их количество (значения)
-sorted_domains = sorted(d.items(), key=lambda x: (x[1], x[0]))
-
-with open('domain_usage.csv', 'w', encoding='utf-8', newline='') as file:
-    writer = csv.writer(file, delimiter=',')
-    writer.writerow(['domain', 'count'])  # запись заголовков
-    writer.writerows(sorted_domains)
+        reg = row['district']
+        num = int(row['number_of_access_points'])
+        d[reg] = d.get(reg, 0) + num
+sorted_dict = sorted(d.items(), key=lambda x: (-x[1], x[0]))     # -x[1] - аналог реверса
+print(*[f'{i[0]}: {i[1]}' for i in sorted_dict], sep='\n')
