@@ -1,19 +1,14 @@
 import json
 
+club1 = {"name": "FC Byern Munchen", "country": "Germany", "founded": 1900,
+         "trainer": "Julian Nagelsmann", "goalkeeper": "M. Neuer", "league_position": 1}
 
-words = {
-         frozenset(["tap", "telephone"]): ("tæp", "telifəun"),
-         "travel": "trævl",
-         ("hello", "world"): ("həˈləʊ", "wɜːld"),
-         "moonlight": "muːn.laɪt",
-         "sunshine": "ˈsʌn.ʃaɪn",
-         ("why", "is", "so", "difficult"): ("waɪ", "ɪz", "səʊ", "ˈdɪfɪkəlt"),
-         "adventure": "ədˈventʃər",
-         "beautiful": "ˈbjuːtɪfl",
-         frozenset(["spoon", "block"]): ("spu:n", "blɔk"),
-         "bicycle": "baisikl",
-         ("pilot", "fly"): ("pailət", "flai")
-        }
+club2 = {"name": "FC Barcelona", "country": "Spain", "founded": 1899,
+         "trainer": "Xavier Creus", "goalkeeper": "M. Ter Stegen", "league_position": 7}
 
-data_json = json.dumps(words, skipkeys=True)
-print(data_json)
+club3 = {"name": "FC Manchester United", "country": "England", "founded": 1878,
+         "trainer": "Michael Carrick", "goalkeeper": "D. De Gea", "league_position": 8}
+l = [club1, club2, club3]
+
+with open('data.json', 'w', encoding='utf-8') as file:
+    json.dump(l, file, indent=3)
