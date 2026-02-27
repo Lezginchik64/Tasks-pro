@@ -1,15 +1,8 @@
 import json
+import sys
 
-
-def is_correct_json(string):
-    try:
-        json.loads(string)  # если преобразование не сработает, вылезает ошибка (except)
-        return True
-    except json.JSONDecodeError:
-        return False
-
-
-data = '{"name": "Barsik", "age": 7, "meal": "Wiskas"}'
-print(is_correct_json(data))
-
-print(is_correct_json('number = 17'))
+data = json.load(sys.stdin)
+for k, v in data.items():
+    if isinstance(v, list):     # Функция isinstance() - для проверки соответствия типа объекта какому-либо типу данных.
+        v = ', '.join(map(str, v))
+    print(f'{k}: {v}')
