@@ -1,8 +1,15 @@
 import json
 
-with open('data1.json', 'r', encoding='utf-8') as inp_file, open('data2.json', 'r', encoding='utf-8') as inp_file2:
-    data1 = json.load(inp_file)
-    data2 = json.load(inp_file2)
+with open('people.json', 'r', encoding='utf-8') as inp_file:
+    elements = json.load(inp_file)
 
-with open('data_merge.json', 'w', encoding='utf-8') as file:
-    json.dump(data1 | data2, file, indent=3)
+all_keys = set()  # для сбора всех возможных ключей
+for elem in elements:
+    all_keys.update(elem.keys())
+
+for elem in elements:
+    for i in all_keys:
+        elem[i] = elem.get(i, None)
+
+with open('updated_people.json', 'w', encoding='utf-8') as file:
+    json.dump(elements, file, indent=3)
