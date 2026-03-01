@@ -1,11 +1,11 @@
 import json
+import csv
 
-with open('countries.json', 'r', encoding='utf-8') as inp_file:
-    elements = json.load(inp_file)
+d = {}
+with open('playgrounds.csv', 'r', encoding='utf-8') as inp_file:
+    reader = csv.DictReader(inp_file, delimiter=';')
+    for i in reader:
+        d.setdefault(i['AdmArea'], {}).setdefault(i['District'], []).append(i['Address'])
 
-res = {}
-for elem in elements:
-    res.setdefault(elem['religion'], []).append(elem['country'])
-
-with open('religion.json', 'w', encoding='utf-8') as file:
-    json.dump(res, file, indent=3)
+with open('addresses.json', 'w', encoding='utf-8') as file:
+    json.dump(d, file, indent=3, ensure_ascii=False)
