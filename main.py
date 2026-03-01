@@ -1,15 +1,11 @@
 import json
 
-with open('people.json', 'r', encoding='utf-8') as inp_file:
+with open('countries.json', 'r', encoding='utf-8') as inp_file:
     elements = json.load(inp_file)
 
-all_keys = set()  # для сбора всех возможных ключей
+res = {}
 for elem in elements:
-    all_keys.update(elem.keys())
+    res.setdefault(elem['religion'], []).append(elem['country'])
 
-for elem in elements:
-    for i in all_keys:
-        elem[i] = elem.get(i, None)
-
-with open('updated_people.json', 'w', encoding='utf-8') as file:
-    json.dump(elements, file, indent=3)
+with open('religion.json', 'w', encoding='utf-8') as file:
+    json.dump(res, file, indent=3)
