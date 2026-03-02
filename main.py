@@ -1,17 +1,17 @@
 import json
 
-with open('pools.json', 'r', encoding='utf-8') as inp_file:
+with open('food_services.json', 'r', encoding='utf-8') as inp_file:
     reader = json.load(inp_file)
 
-filt = list(filter(lambda x: x['WorkingHoursSummer']['Понедельник'].split('-')[0] <= '10:00' and
-                             x['WorkingHoursSummer']['Понедельник'].split('-')[1] >= '12:00', reader))
+d, d2 = {}, {}
+for i in reader:
+    d[i['District']] = d.get(i['District'], 0) + 1
+    if i['OperatingCompany'] == '':
+        continue
+    d2[i['OperatingCompany']] = d2.get(i['OperatingCompany'], 0) + 1
 
-# 1
-max_filter = max(filt, key=lambda x: (x['DimensionsSummer']['Length'], x['DimensionsSummer']['Width']))
+max_d = sorted(d.items(), key=lambda x: x[1], reverse=True)[0]  # max_d = max(d.items(), key=lambda x: x[1])
+max_d2 = sorted(d2.items(), key=lambda x: x[1], reverse=True)[0]  # max_d = max(d, key=d.get)
 
-# 2
-# sort_filter = sorted(filt, key=lambda x: (x['DimensionsSummer']['Length'], x['DimensionsSummer']['Width']),
-#                      reverse=True)[0]      # можно сделать через сортировку
-
-print(f"{max_filter['DimensionsSummer']['Length']}x{max_filter['DimensionsSummer']['Width']}")
-print(max_filter['Address'])
+print(f"{max_d[0]}: {max_d[1]}")
+print(f"{max_d2[0]}: {max_d2[1]}")
