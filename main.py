@@ -1,16 +1,17 @@
 import json
-import csv
 
-with open('students.json', 'r', encoding='utf-8') as inp_file:
+with open('pools.json', 'r', encoding='utf-8') as inp_file:
     reader = json.load(inp_file)
 
-d = {}
-for i in reader:
-    if i['age'] >= 18 and i['progress'] >= 75:
-        d.setdefault(i['name'], i['phone'])
-d = sorted(d.items(), key=lambda x: x[0])
+filt = list(filter(lambda x: x['WorkingHoursSummer']['Понедельник'].split('-')[0] <= '10:00' and
+                             x['WorkingHoursSummer']['Понедельник'].split('-')[1] >= '12:00', reader))
 
-with open('data.csv', 'w', encoding='utf-8') as file:
-    writer = csv.writer(file, delimiter=',')
-    writer.writerow(['name', 'phone'])
-    writer.writerows(d)
+# 1
+max_filter = max(filt, key=lambda x: (x['DimensionsSummer']['Length'], x['DimensionsSummer']['Width']))
+
+# 2
+# sort_filter = sorted(filt, key=lambda x: (x['DimensionsSummer']['Length'], x['DimensionsSummer']['Width']),
+#                      reverse=True)[0]      # можно сделать через сортировку
+
+print(f"{max_filter['DimensionsSummer']['Length']}x{max_filter['DimensionsSummer']['Width']}")
+print(max_filter['Address'])
