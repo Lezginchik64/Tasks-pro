@@ -1,14 +1,13 @@
 from zipfile import ZipFile
+import datetime as dt
 
 # 1
 with ZipFile('workbook.zip', 'r') as file:
     info = file.infolist()
-    min_file = min((i for i in info if i.file_size), key=lambda x: (x.compress_size / x.file_size) * 100)
-    print(min_file.filename.split('/')[1])
+    d = (2021, 11, 30, 14, 22)
+    dates = [i.filename.split('/')[-1] for i in info if i.date_time > d and not i.is_dir()]
+    print(*sorted(dates), sep='\n')
 
 # 2
-with ZipFile('workbook.zip', 'r') as file:
-    info = file.infolist()
-    k = {ind: (i.compress_size / i.file_size) * 100 for ind, i in enumerate(info) if i.file_size}
-    min_k = min(k, key=k.get)
-    print(info[min_k].filename.split('/')[1])
+dates = [info[i].filename.split('/')[-1] for i in range(len(info)) if
+         dt.datetime(*info[i].date_time) > dt.datetime(*d) and not info[i].is_dir()]
