@@ -1,13 +1,9 @@
 from zipfile import ZipFile
-import datetime as dt
 
+file_names = ['how to prove.pdf', 'fipi_demo_2022.pdf', 'Hollow Knight Silksong.exe',
+              'code.jpeg', 'stepik.png', 'readme.txt', 'shopping_list.txt',
+              'Alexandra Savior – Crying All the Time.mp3', 'homework.py', 'test.py']
 
-with ZipFile('workbook.zip', 'r') as file:
-    info = file.infolist()
-    for i in sorted(info, key=lambda x: x.filename.split('/')[-1]):
-        if not i.is_dir():
-            print(i.filename.split('/')[-1])
-            print(f'  Дата модификации файла: {dt.datetime(*i.date_time)}')
-            print(f'  Объем исходного файла: {i.file_size} байт(а)')
-            print(f'  Объем сжатого файла: {i.compress_size} байт(а)')
-            print()
+with ZipFile('files.zip', 'w') as file:
+    for i in file_names:
+        file.write(i)
