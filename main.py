@@ -1,12 +1,26 @@
 from zipfile import ZipFile
+import json
 
 
-def extract_this(zip_name, *args):
-    with ZipFile(zip_name, 'r') as zip_file:
-        zip_file.extractall(members=args or None)   # если args - пустой, тогда None (members=None - извлечь все файлы)
+def load_json(s):
+    try:
+        return json.loads(s)
+    except:
+        return None
 
-# С методом extractall() используем необязательный аргумент members. По умолчанию members = None.
-# Если members = None, то извлекутся все файлы в архиве.
-# Если в members передать список файлов, то извлекутся конкретные файлы.
 
-extract_this('workbook.zip')
+players = []
+with ZipFile('data.zip', 'r') as zip_file:
+    for file in zip_file.namelist():
+        player = load_json(zip_file.read(file))     # читаем файлы из архива - zip_file.read(file) и преобразуем в словарь в функции load_json
+        if player and player['team'] == 'Arsenal':
+            players.append(f"{player['first_name']} {player['last_name']}")
+
+for i in sorted(players):
+    print(i)
+# Исходя из теории сначала открывается конкретный файл в ранее открытом зип-файле, чтобы потом можно было считать этот файл
+# with zip_file.open(f) as file:
+#     d = json.loads(file.read())
+
+# В этой задаче, мы сразу считываем конкретный файл в зипе без создания этого промежуточного файла.
+# player = load_json(zip_file.read(file))
