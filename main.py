@@ -1,10 +1,25 @@
 import pickle
 
+# 1
+file_name, num = input(), int(input())
 
-def filter_dump(filename, objects, typename):
-    obj = [i for i in objects if type(i) == typename]
-    with open(filename, 'wb') as file:
-        pickle.dump(obj, file)
+with open(file_name, 'rb') as file:
+    elem = pickle.load(file)
+
+nums = [i for i in elem if isinstance(i, int)]
+check = sum(nums) if isinstance(elem, dict) else max(nums, default=0) * min(nums, default=0)
+print(['Контрольные суммы не совпадают', 'Контрольные суммы совпадают'][check == num])
 
 
-filter_dump('numbers.pkl', [1, '2', 3, 4, '5'], int)
+# 2
+file_name, num = input(), int(input())
+with open(file_name, 'rb') as file:
+    elem = pickle.load(file)
+
+nums = [i for i in elem if isinstance(i, int)]
+if isinstance(elem, list):
+    res = min(nums, default=0) * max(nums, default=0)
+else:
+    res = sum(nums)
+
+print('Контрольные суммы совпадают' if res == num else 'Контрольные суммы не совпадают')
