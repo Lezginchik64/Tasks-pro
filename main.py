@@ -1,13 +1,10 @@
 import pickle
-import sys
 
-# 1
-file_name, *data = map(str.strip, sys.stdin)
-with open(file_name, mode='rb') as file:
-    f = pickle.load(file)
-    print(f(*data))
 
-# 2
-with open(input(), mode='rb') as file:
-    f = pickle.load(file)
-    print(f(*map(str.strip, sys.stdin)))
+def filter_dump(filename, objects, typename):
+    obj = [i for i in objects if type(i) == typename]
+    with open(filename, 'wb') as file:
+        pickle.dump(obj, file)
+
+
+filter_dump('numbers.pkl', [1, '2', 3, 4, '5'], int)
