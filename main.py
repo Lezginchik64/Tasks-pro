@@ -1,25 +1,110 @@
-import pickle
+# == import os ==
+# Модуль os в Python — это библиотека функций для работы с операционной системой.
+# Методы, включенные в неё позволяют определять тип операционной системы, получать доступ к переменным окружения, управлять директориями и файлами:
+    # проверка существования объекта по заданному пути;
+    # определение размера в байтах;
+    # удаление;
+    # переименование и др.
 
-# 1
-file_name, num = input(), int(input())
+import os  # модуль для работы с операционной системой (файлы, директории, переменные окружения)
+'----------------------'
+os.name
+# имя ОС: 'posix' (Linux/macOS), 'nt' (Windows)
+os.getcwd()
+# текущая рабочая директория    !
+os.chdir('путь')
+# смена текущей рабочей директории      !
+os.chdir('..')
+# вернуться обратно, на уровень выше
+'----------------------'
+os.listdir('путь')
+# список файлов и папок в указанной директории      !
+os.mkdir('имя_папки')
+# создание новой папки (одной)
+os.makedirs('путь/вложенная/папка')
+# создание всех промежуточных директорий        !
+os.remove('файл')
+# удаление файла        !
+os.rmdir('папка')
+# удаление пустой папки     !
+os.removedirs('вложенная/папка')
+# удаляет все пустые промежуточные папки
+'----------------------'
+os.rename('старое_имя', 'новое_имя')
+# переименование файла или папки
+os.rename('старое_имя', 'новый путь')
+# Перемещение файла: если вторым аргументом указать путь в другую папку, файл переедет туда.    !
+os.replace('откуда', 'куда')
+# замена/перемещение (удаляет цель, если уже существует)
+'----------------------'
+os.path.exists('путь')
+# True, если путь (файл или папка) существует        !
+os.path.isfile('путь')
+# возвращает True, только если это существующий файл
+os.path.isdir('путь')
+# возвращает True, только если это существующая папка
+'----------------------'
+os.path.join('путь', 'файл')
+# объединяет части пути → безопасный путь       !
+os.path.abspath('файл')
+# абсолютный путь к файлу
+os.path.basename('путь/файл.txt')
+# из полного пути получить имя файла (без пути)     !
+os.path.dirname('путь/файл.txt')
+# из полного пути получить путь к папке (без имени файла)   !
+'----------------------'
+os.environ
+# словарь переменных окружения (env-переменные)
+os.environ.get('HOME')
+# получить значение переменной окружения
+os.environ['NEW_VAR'] = 'значение'
+# установка переменной окружения
+'----------------------'
+# ПРИМЕЧАНИЯ:
+# Работает кроссплатформенно, но поведение некоторых функций (например, пути, имена) зависит от ОС
+# Для удаления содержимого папки с файлами — использовать shutil.rmtree()
+# os.path — подмодуль для работы с путями
+# os.walk() — генератор обхода директорий (рекурсивно)
 
-with open(file_name, 'rb') as file:
-    elem = pickle.load(file)
+# Давайте быстро пробежимся по тому, что мы теперь умеем:
+# Осматриваться в файловой системе с помощью getcwd и listdir.
+# Перемещаться между папками через chdir.
+# Создавать и удалять папки (mkdir, makedirs, rmdir).
+# Переименовывать, перемещать и удалять файлы (rename, remove).
+# И, что самое главное, — писать кросс-платформенный и безопасный код, используя проверки из os.path.
 
-nums = [i for i in elem if isinstance(i, int)]
-check = sum(nums) if isinstance(elem, dict) else max(nums, default=0) * min(nums, default=0)
-print(['Контрольные суммы не совпадают', 'Контрольные суммы совпадают'][check == num])
 
+# Задача: Раскидывание файлов по папкам
+import os
+import shutil
 
-# 2
-file_name, num = input(), int(input())
-with open(file_name, 'rb') as file:
-    elem = pickle.load(file)
+path_to_sort = '/Users/lezginchik/Downloads/Test'
+all_items = os.listdir(path_to_sort)
 
-nums = [i for i in elem if isinstance(i, int)]
-if isinstance(elem, list):
-    res = min(nums, default=0) * max(nums, default=0)
-else:
-    res = sum(nums)
+for item in all_items:
+    item_full_path = os.path.join(path_to_sort, item)
 
-print('Контрольные суммы совпадают' if res == num else 'Контрольные суммы не совпадают')
+    if os.path.isfile(item_full_path):
+        try:
+            extension = item.split('.')[-1].lower()
+            target_folder = ''
+            if extension in ['jpg', 'jpeg', 'png', 'gif', 'bmp']:
+                target_folder = 'Images'
+            elif extension in ['pdf', 'docx', 'doc', 'txt', 'xlsx']:
+                target_folder = 'Documents'
+            elif extension in ['zip', 'rar', '7z']:
+                target_folder = 'Archives'
+            else:
+                target_folder = 'Other'
+
+            target_folder_path = os.path.join(path_to_sort, target_folder)
+            if not os.path.exists(target_folder_path):
+                os.makedirs(target_folder_path)
+                print(f"Создана папка: {target_folder}")
+
+            shutil.move(item_full_path, target_folder_path)
+            print(f"Файл '{item}' перемещен в папку '{target_folder}'")
+        except Exception as e:
+            print(f"Не удалось обработать файл '{item}'. Ошибка: {e}")
+
+print("\nСортировка завершена!")
