@@ -1,33 +1,28 @@
 from collections import namedtuple
+from datetime import datetime
+import csv
 
-User = namedtuple('User', ['name', 'surname', 'email', 'plan'])
+# 1
+with open('meetings.csv', 'r', encoding='utf-8') as file:
+    header, *rows = csv.reader(file)
+    Data = namedtuple('Data', header)
+    sort_rows = sorted(rows, key=lambda x: datetime.strptime(f'{x[2]} {x[3]}', '%d.%m.%Y %H:%M'))
+    for row in sort_rows:
+        d = Data(*row)
+        print(f'{d.surname} {d.name}')
 
-users = [User('Mary', 'Griffin', 'sonnen@yahoo.com', 'Basic'),
-         User('Brenda', 'Young', 'retoh@outlook.com', 'Silver'),
-         User('Kathleen', 'Lyons', 'balchen@att.net', 'Gold'),
-         User('Pamela', 'Hicks', 'corrada@sbcglobal.net', 'Silver'),
-         User('William', 'Townsend', 'kosact@verizon.net', 'Gold'),
-         User('Clayton', 'Morris', 'berserk@yahoo.com', 'Silver'),
-         User('Dorothy', 'Dennis', 'sequin@live.com', 'Gold'),
-         User('Tyler', 'Walker', 'noahb@comcast.net', 'Basic'),
-         User('Joseph', 'Moore', 'ylchang@sbcglobal.net', 'Silver'),
-         User('Kenneth', 'Richardson', 'tbusch@me.com', 'Bronze'),
-         User('Stephanie', 'Bush', 'neuffer@live.com', 'Gold'),
-         User('Gregory', 'Hughes', 'juliano@att.net', 'Basic'),
-         User('Tracy', 'Wallace', 'sblack@me.com', 'Silver'),
-         User('Russell', 'Smith', 'isaacson@comcast.net', 'Bronze'),
-         User('Megan', 'Patterson', 'hoangle@outlook.com', 'Basic')]
+    # можно функцией map
+    for d in map(Data, sorted(rows, key=lambda x: datetime.strptime(f'{x[2]} {x[3]}', '%d.%m.%Y %H:%M'))):
+        print(d.surname, d.name)
 
-dictforsort = {'Gold': 0, 'Silver': 1, 'Bronze': 2, 'Basic': 3}
-sort_users = sorted(users, key=lambda x: (dictforsort[x.plan], x.email))
-# sort_users = sorted(users, key=lambda x: (('Gold', 'Silver', 'Bronze', 'Basic').index(x.plan), x.email))
-for user in sort_users:
-    print(f'{user.name} {user.surname}')
-    print(f'  Email: {user.email}')
-    print(f'  Plan: {user.plan}\n')
-
-# sort_users = sorted(users, key=lambda x: (('Gold', 'Silver', 'Bronze', 'Basic').index(x.plan), x.email))
-# Разбор сортировки:
-# index(x.plan) - это индекс элемента из кортежа ('Gold', 'Silver', 'Bronze', 'Basic'). Проще на примере.
-# Допустим, у нас x.plan у данного User'a ,будет 'Gold'. Тогда получаем  ('Gold', 'Silver', 'Bronze', 'Basic').index('Gold').
-# А какой индекс у элемента 'Gold' в этом кортеже? Ноль. Соответственно,  приоритет у него выше и он выведется раньше.
+# 2
+with open('meetings.csv', encoding='utf-8') as f:
+    reader = csv.DictReader(f)
+    Data = namedtuple('Data', reader.fieldnames)  # reader.fieldnames - первая строка (заголовки)
+    for d in map(lambda r: Data(**r), sorted(reader,
+                                             key=lambda x: datetime.strptime(f'{x['meeting_date']} {x['meeting_time']}',
+                                                                             '%d.%m.%Y %H:%M'))):
+        print(d.surname, d.name)
+# ** распаковывает словарь в именованные аргументы
+# ключи = имена параметров
+# значения = передаваемые данные
