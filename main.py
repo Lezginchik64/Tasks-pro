@@ -1,15 +1,12 @@
 from collections import defaultdict
 
-def wins(pairs):
-    res = defaultdict(set)
-    for win, lose in pairs:
-        res[win].add(lose)
+
+def flip_dict(dict_of_lists):
+    res = defaultdict(list)
+    for key, val in dict_of_lists.items():
+        for elem in val:
+            res[elem].append(key)
     return res
 
-result = wins([('Тимур', 'Артур'), ('Тимур', 'Дима'), ('Дима', 'Артур')])
-for winner, losers in sorted(result.items()):
-    print(winner, '->', *sorted(losers))
 
-result = wins([('Артур', 'Дима'), ('Артур', 'Тимур'), ('Артур', 'Анри'), ('Дима', 'Артур')])
-for winner, losers in sorted(result.items()):
-    print(winner, '->', *sorted(losers))
+print(flip_dict({'a': [1, 2], 'b': [3, 1], 'c': [2]}))
