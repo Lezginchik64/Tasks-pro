@@ -1,17 +1,7 @@
 from collections import Counter
 
-
-# 1
-def count_occurrences(word, words):
-    counter = Counter(words.lower().split())
-    return counter[word.lower()]
-
-
-# 2
-def count_occurrences(word, words):
-    return Counter(words.lower().split())[word.lower()]
-
-
-word = 'python'
-words = 'Python Conferences python training python events'
-print(count_occurrences(word, words))
+counter = Counter(input().split(','))
+max_len = max(len(word) for word in counter)
+for key, val in sorted(counter.items()):
+    price = sum(ord(i) for i in key if i.isalpha())
+    print(f'{key.ljust(max_len)}: {price} UC x {val} = {price * val} UC')
