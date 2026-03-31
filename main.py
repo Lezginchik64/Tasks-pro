@@ -1,7 +1,7 @@
 from collections import Counter
 
-counter = Counter(input().split(','))
-max_len = max(len(word) for word in counter)
-for key, val in sorted(counter.items()):
-    price = sum(ord(i) for i in key if i.isalpha())
-    print(f'{key.ljust(max_len)}: {price} UC x {val} = {price * val} UC')
+with open('pythonzen.txt', 'r', encoding='utf-8') as file:
+    counter = Counter(filter(str.isalpha, file.read().lower()))
+    # counter = Counter([line for line in file.read().lower() if line.isalpha()])
+for i in sorted(counter):
+    print(f'{i}: {counter[i]}')
