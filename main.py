@@ -1,11 +1,15 @@
-numbers = [6, 0, 36, 8, 2, 36, 0, 12, 60, 0, 45, 0, 3, 23]
+import sys
 
-remainders = []
-
-for number in numbers:
+count, total = 0, 0
+for i in sys.stdin:
     try:
-        remainders.append(36 % number)
-    except ZeroDivisionError:
-        pass
+        total += float(i)
+    except ValueError:
+        count += 1
 
-print(remainders)
+print(int(total) if total.is_integer() else total)
+print(count)
+
+# f1 = 2.0
+# f2 = 2.2
+# print(f1.is_integer(), f2.is_integer())   # True False
