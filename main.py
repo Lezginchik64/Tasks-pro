@@ -1,26 +1,20 @@
-import calendar
-
-# 1
-try:
-    s = int(input())
-    if s in [i for i in range(1, 13)]:
-        print(calendar.month_name[s])   # месяц по введенному числу
-    else:
-        print("Введено число из недопустимого диапазона")
-except ValueError:
-    print("Введено некорректное значение")
+def add_to_list_in_dict(data, key, element):
+    try:
+        data[key].append(element)
+    except KeyError:
+        data.setdefault(key, [element])
 
 # 2
-import calendar, math
-try:
-    n = int(input())
+def add_to_list_in_dict(data, key, element):
     try:
-        1/math.sqrt(n)
-        print(calendar.month_name[n])
-    except:
-        print('Введено число из недопустимого диапазона')
-except:
-    print('Введено некорректное значение')
+        data[key].append(element)
+    except KeyError:
+        data[key] = [element]
 
+data = {'a': [1, 2, 3], 'b': [4, 5, 6]}
+add_to_list_in_dict(data, 'b', 7)
+print(data)
 
-
+data = {'a': [1, 2, 3], 'b': [4, 5, 6]}
+add_to_list_in_dict(data, 'c', 7)
+print(data)
